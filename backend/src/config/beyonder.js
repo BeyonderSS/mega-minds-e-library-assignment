@@ -1,5 +1,4 @@
-import config from "../../public/config.json" assert { type: "json" };
-
+const config = JSON.parse(await readFile(new URL("../../public/config.json", import.meta.url), "utf8"));
 /**
  * Beyonder console logger
  */
