@@ -66,13 +66,13 @@ export async function session() {
         return { user: null };
     }
 
-    try {
-        const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
-        return { user: decoded };
-    } catch (error) {
-        console.error("Session Error:", error);
-        return { user: null };
+    const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
+    console.log(decoded)
+    if (!decoded.user) {
+        await logout()
     }
+    return { user: decoded };
+
 }
 
 export async function logout() {
