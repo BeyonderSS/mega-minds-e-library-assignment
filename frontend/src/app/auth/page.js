@@ -64,7 +64,8 @@ export default function AuthPage() {
     } catch (error) {
       console.error("Login Submission Error:", error);
     } finally {
-      router.refresh()
+      router.push("/dashboard/browse");
+      // Reset the form
       setIsLoading(false);
     }
   }
@@ -87,6 +88,7 @@ export default function AuthPage() {
       console.error("Register Submission Error:", error);
       return { error: error.message };
     } finally {
+      router.push("/dashboard/browse");
       setIsLoading(false);
     }
   }
