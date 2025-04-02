@@ -19,12 +19,11 @@ connectDB();
 const app = express();
 const server = http.createServer(app); // Create HTTP server for Socket.IO
 
-// ✅ CORS: Allow All Origins
 app.use(cors({ 
-    origin: "*", 
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
-    allowedHeaders: ["Content-Type", "Authorization"], 
-    credentials: true 
+    origin: "https://mega-minds-e-library-assignment.vercel.app", // ✅ Allow only this domain
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+    credentials: true // ✅ Allow cookies & authentication headers
 }));
 
 app.use(express.json());
