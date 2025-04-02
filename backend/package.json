@@ -1,0 +1,34 @@
+{
+  "name": "mega-minds-e-library",
+  "version": "1.0.0",
+  "description": "Backend server for Mega Minds E-Library",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.8.6",
+    "morgan": "^1.10.0",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "library",
+    "e-library",
+    "mega-minds"
+  ],
+  "author": "Puneet Bhardwaj",
+  "license": "MIT"
+}

@@ -1,0 +1,41 @@
+# Root-level ignores (applies to both frontend and backend)
+node_modules/
+.env
+.env.local
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Frontend-specific ignores (Next.js)
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/.turbo/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/public/uploads/
+
+# Backend-specific ignores (Node.js)
+backend/dist/
+backend/build/
+backend/logs/
+backend/tmp/
+backend/.env
+backend/.env.local
+backend/.env.development.local
+backend/.env.production.local
+backend/public/uploads/
+
+# Ignore dependency locks if using a specific package manager
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+.qodo
