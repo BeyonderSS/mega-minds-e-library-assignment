@@ -8,9 +8,9 @@ import userRoutes from "./routes/user.routes.js";
 import categoryRoutes from "./routes/category.route.js";
 import bookRoutes from "./routes/book.route.js";
 import { beyonderLogger } from "./config/beyonder.js";
+
 // Load env variables
 dotenv.config();
-
 
 // Connect to Database
 connectDB();
@@ -19,7 +19,14 @@ connectDB();
 const app = express();
 const server = http.createServer(app); // Create HTTP server for Socket.IO
 
-app.use(cors());
+// ✅ CORS: Allow All Origins
+app.use(cors({ 
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
+    allowedHeaders: ["Content-Type", "Authorization"], 
+    credentials: true 
+}));
+
 app.use(express.json());
 
 // Routes
