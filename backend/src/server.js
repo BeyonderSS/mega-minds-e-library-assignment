@@ -19,8 +19,19 @@ connectDB();
 const app = express();
 const server = http.createServer(app); // Create HTTP server for Socket.IO
 
-app.use(cors({ 
-    origin: "https://mega-minds-e-library-assignment.vercel.app", // ✅ Allow only this domain
+const allowedOrigins = [
+    "https://mega-minds-e-library-assignment.vercel.app", // ✅ Production domain
+    "http://localhost:3000" // ✅ Allow local development
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
     credentials: true // ✅ Allow cookies & authentication headers
