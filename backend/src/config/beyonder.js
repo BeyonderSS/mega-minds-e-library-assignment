@@ -1,4 +1,14 @@
-const config = JSON.parse(await readFile(new URL("../../public/config.json", import.meta.url), "utf8"));
+import { readFile } from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Convert import.meta.url to a file path
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const configPath = path.join(__dirname, "../../public/config.json");
+
+const config = JSON.parse(await readFile(configPath, "utf8"));
+
 /**
  * Beyonder console logger
  */
