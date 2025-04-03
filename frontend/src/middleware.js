@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { decodeToken } from "./utils/auth";
+
 export async function middleware(request) {
     const url = request.nextUrl;
-    const token = request.cookies.get("token")?.value; // Get token from cookies
-    const decodedTokenValue = await decodeToken(token); // ✅ Await the token decoding
+    const token = request.cookies.get("token")?.value; 
+    const decodedTokenValue = await decodeToken(token); 
+
+    // 🚫 Always block the root `/` route
+    if (url.pathname === "/") {
+        return NextResponse.redirect(new URL("/auth", request.url)); // Redirect to /auth (or any other page)
+    }
 
     if (!decodedTokenValue) {
         // 🚫 If user is NOT authenticated, allow access ONLY to /auth
@@ -19,7 +25,6 @@ export async function middleware(request) {
 
     return NextResponse.next();
 }
-
 
 // ✅ **Middleware Matcher**
 export const config = {
