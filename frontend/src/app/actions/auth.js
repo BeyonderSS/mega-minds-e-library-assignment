@@ -68,9 +68,7 @@ export async function session() {
 
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
     console.log(decoded)
-    if (!decoded.user) {
-        await logout()
-    }
+
     return { user: decoded };
 
 }

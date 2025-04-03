@@ -25,7 +25,7 @@ function Footer() {
         error: "Logout failed. Please try again.",
       });
 
-      router.refresh(); // Redirect to login page after logout
+      router.push("/auth"); // Redirect to login page after logout
     } catch (error) {
       console.error("Logout Error:", error);
     } finally {

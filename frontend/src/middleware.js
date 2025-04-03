@@ -1,47 +1,27 @@
 import { NextResponse } from "next/server";
+import { decodeToken } from "./utils/auth";
+export async function middleware(request) {
+    const url = request.nextUrl;
+    const token = request.cookies.get("token")?.value; // Get token from cookies
+    const decodedTokenValue = await decodeToken(token); // ✅ Await the token decoding
 
-export async function middleware(req) {
-    const url = req.nextUrl.clone();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-    try {
-        const res = await fetch(`${siteUrl}/api/session`, {
-            method: "GET",
-            headers: {
-                Cookie: req.headers.get("cookie") || "",
-            },
-            credentials: "include",
-        });
-
-        const data = await res.json();
-        const isAuthenticated = res.status === 200 && data.authenticated;
-
-        if (isAuthenticated) {
-            // 🚀 If user is authenticated, prevent access to `/auth` page
-            if (url.pathname.startsWith("/auth")) {
-                url.pathname = "/dashboard/browse";
-                return NextResponse.redirect(url);
-            }
-        } else {
-            // 🚫 If user is NOT authenticated and trying to access protected routes, redirect to `/auth`
-            if (
-                url.pathname.startsWith("/dashboard") ||
-                url.pathname === "/"
-            ) {
-                url.pathname = "/auth";
-                return NextResponse.redirect(url);
-            }
+    if (!decodedTokenValue) {
+        // 🚫 If user is NOT authenticated, allow access ONLY to /auth
+        if (!url.pathname.startsWith("/auth")) {
+            return NextResponse.redirect(new URL("/auth", request.url));
         }
-
-        return NextResponse.next();
-    } catch (error) {
-        console.error("Middleware Error:", error);
-        url.pathname = "/auth";
-        return NextResponse.redirect(url);
+    } else {
+        // ✅ If user IS authenticated, prevent access to /auth
+        if (url.pathname.startsWith("/auth")) {
+            return NextResponse.redirect(new URL("/dashboard/browse", request.url));
+        }
     }
+
+    return NextResponse.next();
 }
 
-// ✅ **Fixed Middleware Matcher**
+
+// ✅ **Middleware Matcher**
 export const config = {
-    matcher: ["/", "/dashboard/:path*"], // Only protect dashboard and root
+    matcher: ["/", "/dashboard/:path*", "/auth"], // Protect root, dashboard, and auth
 };
