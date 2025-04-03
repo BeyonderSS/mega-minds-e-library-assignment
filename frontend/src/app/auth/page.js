@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -14,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { login, register } from "../actions/auth"
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 // Login form schema
 const loginSchema = z.object({
@@ -57,33 +57,35 @@ export default function AuthPage() {
     try {
       await toast.promise(login(data), {
         loading: "Loading...",
-        success: (response) => `Login Successful Reddirecting to dashboard`,
+        success: "Login Successful Redirecting to dashboard",
         error: "Error",
       });
-      router.push("/dashboard/browse");
+
+      // ✅ Page refresh after login completes
+      router.refresh();
     } catch (error) {
       console.error("Login Submission Error:", error);
     } finally {
-      // Reset the form
       setIsLoading(false);
     }
   }
-
-  // Handle register submission
   async function onRegisterSubmit(data) {
     setIsLoading(true);
     try {
       await toast.promise(register(data), {
         loading: "Loading...",
-        success: (response) => `Successfully registered. Redirecting to login`,
+        success: "Successfully registered. Redirecting to login",
         error: "Error",
       });
+
       await toast.promise(login({ email: data.email, password: data.password }), {
         loading: "Loading...",
-        success: (response) => `Login Successful Reddirecting to dashboard`,
+        success: "Login Successful Redirecting to dashboard",
         error: "Error",
       });
-      router.push("/dashboard/browse");
+
+      // ✅ Page refresh after login completes
+      router.refresh();
     } catch (error) {
       console.error("Register Submission Error:", error);
       return { error: error.message };
